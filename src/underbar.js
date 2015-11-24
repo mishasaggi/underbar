@@ -235,12 +235,28 @@
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
-
+    _.each(arguments, function(sourceObj){
+      _.each(sourceObj, function(value, key){ //in an array it would be item, index
+        obj[key] = value;
+      })
+    })
+    return obj;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    _.each(arguments, function(sourceObj){
+      _.each(sourceObj, function(value, key){
+        //if the key doesn't exist or has a falsy value
+        if(obj[key] === undefined || !key in obj) {
+          obj[key] = value;
+        }
+        //obj[key] === undefined && obj[key] = value;
+        //!key in obj && 
+      })
+    })
+    return obj;
   };
 
 
