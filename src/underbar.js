@@ -188,12 +188,31 @@
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+    iterator = iterator || _.identity;
+    return _.reduce(collection, function(boolResult, item){
+      //if an item fails the test, return immediately, reduce will return a false
+      if(!boolResult) return false;
+      //if current accumulator is not false, check the next item, accumulator will store this boolean
+      else return iterator(item) ? true : false;
+    }, true);
+     /* canonical solution
+         return !!_.reduce(collection, function(trueSoFar, value){
+            return (trueSoFar && iterator(value))
+
+          }, true);
+    */
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    iterator = iterator || _.identity;
+    //we want to return true for mixed truthy values as well
+    //double negate a falsy value
+    return !!_.reduce(collection, function(trueSoFar, item){
+      return (trueSoFar || iterator(item));
+    }, false);
   };
 
 
@@ -216,6 +235,7 @@
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+
   };
 
   // Like extend, but doesn't ever overwrite a key that already
